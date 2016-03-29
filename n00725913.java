@@ -33,10 +33,27 @@ class Program{
             this.numberOfStrings = findNumberOfStrings();
         }
         System.out.printf("%nEnd of Program%n");
-        return;
     }
     
-    public int findNumberOfStrings(){
+    private int getNextPrime(int min){
+        for(int i = min + 1; i < Integer.MAX_VALUE - 1; i++){
+            if(isPrime(i)){
+                return i;
+            }
+        }
+        return -1;
+    }
+    
+    private boolean isPrime(int p){
+        for(int i = 2; (i * i) <= p; i++){
+            if( (p % i) == 0){
+                return false;
+            }
+        }
+        return true;
+    }
+    
+    private int findNumberOfStrings(){
         int number = 0;
         try{
             Scanner fileScanner = new Scanner(this.initialFile);
@@ -54,13 +71,13 @@ class Program{
         return number;
     }
     
-    public int determineArraySize(int nonPrime){
+    private int determineArraySize(int nonPrime){
         int prime = 0;
         
         return prime;
     }
     
-    public boolean initializeFiles(String[] args){
+    private boolean initializeFiles(String[] args){
         boolean valid = true;
         this.initialFile = new File(args[0]);
         if(!initialFile.exists()){
@@ -79,4 +96,4 @@ class Program{
         }
         return valid;
     }
-}
+}//end of class Program
