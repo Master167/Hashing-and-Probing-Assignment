@@ -29,23 +29,25 @@ So each string is essentially treated as a very large int which causes overflow.
 The strings might have as many as 40 chars so that the leading power would be 26**39.
 
 
-Task 1: Count the number of strings in the first file, say n.
-Task 2: Find the first prime number larger than 2n, say p (a hint for finding p is in the book).
-Task 3: Construct an array A and another array B of size p (indexed from 0 to p-1) to hold strings.
-Task 4: Insert each of the strings in the first file into A using linear probing and into B using 
-        quadratic probing. In each case use Horner's polynomial.
-        Print the contents of A (index , string, and probe length for each insertion, all three on a single  line) followed
-        by the contents of B (index, string, and probe length) . Only do the printing for non-empty cells.
-                                 A
-                      index   string   probe length for insertion
-                       3        xyz        4
-                       etc
-      ave probe length:                        x.xx           
-                                 B
-                      index   string   probe length for insertion
-                       3        xyz        4
-                       etc
-                 ave:                     y.yy
+# Task 1: 
+Count the number of strings in the first file, say n.
+# Task 2: 
+Find the first prime number larger than 2n, say p (a hint for finding p is in the book).
+# Task 3: 
+Construct an array A and another array B of size p (indexed from 0 to p-1) to hold strings.
+# Task 4: 
+Insert each of the strings in the first file into A using linear probing and into B using quadratic probing. In each case use Horner's polynomial.
+Then print the contents of A (index , string, and probe length for each insertion, all three on a single  line) followed by the contents of B (index, string, and probe length) . Only do the printing for non-empty cells.
+                               A
+                    index   string   probe length for insertion
+                     3        xyz        4
+                     etc
+    ave probe length:                        x.xx           
+                               B
+                    index   string   probe length for insertion
+                     3        xyz        4
+                     etc
+               ave:                     y.yy
 
 
 It is required that you hash (Horner's polynomial) using the technique we discussed
