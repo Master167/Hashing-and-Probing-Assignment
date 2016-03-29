@@ -6,7 +6,7 @@ Assignment using Hashing, Linear and Quadratic probing
 Use Java.
 
 For this program you are going to read three files of strings (using only lowercase alpha chars, each with no blanks, and each
-separated by a new line--all three files will be on the command line--build/run args). The data will be such as:
+separated by a new line--all three files will be on the command line--use build/run args in jGrasp). The data will be such as (spaces as newlines):
 
 zyxabc
 ace
