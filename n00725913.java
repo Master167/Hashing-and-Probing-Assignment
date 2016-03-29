@@ -21,7 +21,7 @@ public class n00725913
 
 class Program{
     File initialFile;
-    File insertionFile;
+    File searchFile;
     File deletionFile;
     
     int numberOfStrings;
@@ -32,6 +32,7 @@ class Program{
         if(valid){
             this.numberOfStrings = findNumberOfStrings();
         }
+        System.out.printf("%nEnd of Program%n");
         return;
     }
     
@@ -66,9 +67,9 @@ class Program{
             System.out.printf("Intial File Not Found%n");
             valid = false;
         }
-        this.insertionFile = new File(args[1]);
-        if(!this.insertionFile.exists()){
-            System.out.printf("Insertion File Not Found%n");
+        this.searchFile = new File(args[1]);
+        if(!this.searchFile.exists()){
+            System.out.printf("Search File Not Found%n");
             valid = false;
         }
         this.deletionFile = new File(args[1]);
