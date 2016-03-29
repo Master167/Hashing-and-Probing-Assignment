@@ -1,4 +1,5 @@
 import java.util.List;
+import java.util.Scanner;
 import java.io.File;
 /*
    Michael Frederick
@@ -29,13 +30,25 @@ class Program{
     public void runProgram(String[] args){
         boolean valid = initializeFiles(args);
         if(valid){
-            //DO ALL THE THINGS
+            this.numberOfStrings = findNumberOfStrings();
         }
         return;
     }
     
     public int findNumberOfStrings(){
-        int number;
+        int number = 0;
+        try{
+            Scanner fileScanner = new Scanner(this.initialFile);
+            while (fileScanner.hasNext()){
+                number++;
+                //I'm not inserting the values yet
+                fileScanner.nextLine();
+            }
+        }
+        catch (Exception ex){
+            //Something bad happened
+            System.out.printf(ex.toString());
+        }
         
         return number;
     }
