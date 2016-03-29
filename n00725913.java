@@ -31,6 +31,15 @@ class Program{
         boolean valid = initializeFiles(args);
         if(valid){
             this.numberOfStrings = findNumberOfStrings();
+            this.arraySize = getNextPrime(this.numberOfStrings);
+            
+            //Create Hash Tables for Linear Probing and Quadratic probing
+            
+            //Fill the tables
+            
+            //Find strings in those tables
+            
+            //Delete strings in those tables
         }
         System.out.printf("%nEnd of Program%n");
     }
