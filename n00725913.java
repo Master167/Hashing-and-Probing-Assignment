@@ -35,6 +35,7 @@ class Program{
         System.out.printf("%nEnd of Program%n");
     }
     
+    // Method from pg. 541 of Data Structures and Algorithms in Java by Robert Lafore
     private int getNextPrime(int min){
         for(int i = min + 1; i < Integer.MAX_VALUE - 1; i++){
             if(isPrime(i)){
@@ -44,6 +45,7 @@ class Program{
         return -1;
     }
     
+    // Method from pg. 541 of Data Structures and Algorithms in Java by Robert Lafore
     private boolean isPrime(int p){
         for(int i = 2; (i * i) <= p; i++){
             if( (p % i) == 0){
