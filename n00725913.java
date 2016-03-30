@@ -197,7 +197,7 @@ class HashTable
       int hashVal = hashFunc(key);  // hash the key
                                     // until empty cell or -1,
       while(hashArray[hashVal] != null &&
-            hashArray[hashVal].getKey() != this.nonItem.getKey())
+            !hashArray[hashVal].getKey().equals(this.nonItem.getKey()))
          {
          item.increaseProbeLength();
          ++hashVal;                 // go to next cell
@@ -213,7 +213,7 @@ class HashTable
 
       while(hashArray[hashVal] != null)  // until empty cell,
         {                               // found the key?
-         if(hashArray[hashVal].getKey() == key){
+         if(hashArray[hashVal].getKey().equals(key)){
             DataItem temp = hashArray[hashVal]; // save item
             hashArray[hashVal] = nonItem;       // delete item
             return temp;                        // return item
