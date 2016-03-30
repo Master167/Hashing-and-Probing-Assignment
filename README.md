@@ -48,12 +48,12 @@ separated by a new line--all three files will be on the command line--use build/
                     index   string   probe length for insertion
                      3        xyz        4
                      etc
-    ave probe length:                        x.xx           
+                    ave probe length:                      x.xx           
                                B
                     index   string   probe length for insertion
                      3        xyz        4
                      etc
-               ave:                     y.yy
+                    ave:                                   y.yy
 
 
 * It is required that you hash (Horner's polynomial) using the technique we discussed in class so as to avoid overflow at each stage. See: http://math.fullerton.edu/mathews/n2003/HornerMod.html and/or pages 564-565.
