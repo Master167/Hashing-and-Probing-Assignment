@@ -1,6 +1,7 @@
 import java.util.List;
 import java.util.Scanner;
 import java.io.File;
+import java.io.FileNotFoundException;
 /*
    Michael Frederick
    N00725913
@@ -34,14 +35,35 @@ class Program{
             this.arraySize = getNextPrime(this.numberOfStrings);
             
             //Create Hash Tables for Linear Probing and Quadratic probing
+            HashTable linearTable = new HashTable("A", this.arraySize);
+            HashTable quadTable = new HashTable("B", this.arraySize);
             
             //Fill the tables
+            linearTable = fillTableLinear(this.initialFile, linearTable);
             
             //Find strings in those tables
             
             //Delete strings in those tables
         }
         System.out.printf("%nEnd of Program%n");
+    }
+    
+    private HashTable fillTableLinear(File file, HashTable table){
+        try{
+            Scanner fileReader = new Scanner(file);
+            for(int i = 0; i <= this.numberOfStrings; i++){
+                table.insertLinear(new DataItem(fileReader.nextLine()));
+            }
+        }
+        catch(FileNotFoundException ex){
+            System.out.printf(ex.toString());
+        }
+        
+        return table;
+    }
+    
+    private HashTable fillTableQuad(File file, HashTable table){
+        return table;
     }
     
     // Method from pg. 541 of Data Structures and Algorithms in Java by Robert Lafore
@@ -82,17 +104,11 @@ class Program{
         return number;
     }
     
-    private int determineArraySize(int nonPrime){
-        int prime = 0;
-        
-        return prime;
-    }
-    
     private boolean initializeFiles(String[] args){
         boolean valid = true;
         this.initialFile = new File(args[0]);
         if(!initialFile.exists()){
-            System.out.printf("Intial File Not Found%n");
+            System.out.printf("Initial File Not Found%n");
             valid = false;
         }
         this.searchFile = new File(args[1]);
@@ -100,7 +116,7 @@ class Program{
             System.out.printf("Search File Not Found%n");
             valid = false;
         }
-        this.deletionFile = new File(args[1]);
+        this.deletionFile = new File(args[2]);
         if(!this.deletionFile.exists()){
             System.out.printf("Deletion File Not Found%n");
             valid = false;
@@ -139,8 +155,9 @@ class HashTable
    private DataItem[] hashArray;    // array holds hash table
    private int arraySize;
    private DataItem nonItem;        // for deleted items
+   private String tableName;
 // -------------------------------------------------------------
-   public HashTable(int size)       // constructor
+   public HashTable(String tableName, int size)       // constructor
       {
       arraySize = size;
       hashArray = new DataItem[arraySize];
@@ -149,7 +166,7 @@ class HashTable
 // -------------------------------------------------------------
    public void displayTable()
       {
-      System.out.print("Table: ");
+      System.out.printf("%s%n", this.tableName);
       for(int j=0; j<arraySize; j++)
          {
          if(hashArray[j] != null)
@@ -163,8 +180,14 @@ class HashTable
 // -------------------------------------------------------------
    public int hashFunc(String key)
       {
-        System.out.printf("hashFunc: Rewrite this function%n");
-        return -1;
+        char[] charArray = key.toCharArray();
+        int hashValue = charArray[0];
+        int temp;
+        for(int i = 1; i < charArray.length; i++){
+            temp = charArray[i];
+            hashValue = (hashValue * 27 + temp) % arraySize;
+        }
+        return hashValue;
       }
 // -------------------------------------------------------------
    public void insertLinear(DataItem item) // insert a DataItem
@@ -176,9 +199,11 @@ class HashTable
       while(hashArray[hashVal] != null &&
             hashArray[hashVal].getKey() != this.nonItem.getKey())
          {
+         item.increaseProbeLength();
          ++hashVal;                 // go to next cell
          hashVal %= arraySize;      // wraparound if necessary
          }
+      item.increaseProbeLength();
       hashArray[hashVal] = item;    // insert item
       }  // end insert()
 // -------------------------------------------------------------
