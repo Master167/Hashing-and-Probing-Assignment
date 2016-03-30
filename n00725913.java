@@ -40,6 +40,7 @@ class Program{
             
             //Fill the tables
             linearTable = fillTableLinear(this.initialFile, linearTable);
+            linearTable.displayTable();
             
             //Find strings in those tables
             
@@ -51,7 +52,7 @@ class Program{
     private HashTable fillTableLinear(File file, HashTable table){
         try{
             Scanner fileReader = new Scanner(file);
-            for(int i = 0; i <= this.numberOfStrings; i++){
+            for(int i = 0; i < this.numberOfStrings; i++){
                 table.insertLinear(new DataItem(fileReader.nextLine()));
             }
         }
@@ -159,23 +160,22 @@ class HashTable
 // -------------------------------------------------------------
    public HashTable(String tableName, int size)       // constructor
       {
-      arraySize = size;
-      hashArray = new DataItem[arraySize];
-      nonItem = new DataItem("");   // deleted item key is -1
+      this.arraySize = size;
+      this.hashArray = new DataItem[arraySize];
+      this.nonItem = new DataItem("");   // deleted item key is the empty string
+      this.tableName = tableName;
       }
 // -------------------------------------------------------------
    public void displayTable()
       {
       System.out.printf("%s%n", this.tableName);
+      System.out.printf("%s | %-40s | %s |%n", "Index", "String", "Probe Length for Insertion");
       for(int j=0; j<arraySize; j++)
          {
-         if(hashArray[j] != null)
-            System.out.print(hashArray[j].getKey() + " ");
-         else
-            System.out.print("** ");
+            if(hashArray[j] != null){
+                System.out.printf("%5d | %-40s | %-13d%n", j, hashArray[j].getKey(), hashArray[j].getProbeLength());
+            }
          }
-      System.out.println("");
-      System.out.printf("displayTable: Rewrite this function%n");
       }
 // -------------------------------------------------------------
    public int hashFunc(String key)
