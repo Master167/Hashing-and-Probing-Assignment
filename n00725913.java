@@ -289,16 +289,21 @@ class HashTable
    public DataItem findQuad(String key)    // find item with key
       {
       int hashVal = hashFunc(key);  // hash the key
+      int length = 1;
+      int index = hashVal;
 
-      while(hashArray[hashVal] != null)  // until empty cell,
+      while(hashArray[index] != null)  // until empty cell,
          {                               // found the key?
-         if(hashArray[hashVal].getKey().equals(key)){
-            return hashArray[hashVal];   // yes, return item
+         if(hashArray[index].getKey().equals(key)){
+            return hashArray[index];   // yes, return item
          }
-         ++hashVal;                 // go to next cell
-         hashVal %= arraySize;      // wraparound if necessary
+         length++;
+         index = hashVal + (length * length);                 // go to next cell
+         index %= arraySize;      // wraparound if necessary
          }
-      return null;                  // can't find item
+      DataItem fail = new DataItem(nonItem.getKey());
+      fail.setProbeLength(length);
+      return fail;                  // can't find item
       }
 // -------------------------------------------------------------
 
