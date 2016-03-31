@@ -40,11 +40,19 @@ class Program{
             
             //Fill the tables
             linearTable = fillTableLinear(this.initialFile, linearTable);
+            quadTable = fillTableQuad(this.initialFile, quadTable);
+
+            //Show Results
             linearTable.displayTable();
+            quadTable.displayTable();
             
             //Find strings in those tables
             
+            //Show Results
+            
             //Delete strings in those tables
+            
+            //Show Results
         }
         System.out.printf("%nEnd of Program%n");
     }
@@ -64,6 +72,16 @@ class Program{
     }
     
     private HashTable fillTableQuad(File file, HashTable table){
+        try{
+            Scanner fileReader = new Scanner(file);
+            for(int i = 0; i < this.numberOfStrings; i++){
+                table.insertQuad(new DataItem(fileReader.nextLine()));
+            }
+        }
+        catch(FileNotFoundException ex){
+            System.out.printf(ex.toString());
+        }
+        
         return table;
     }
     
