@@ -149,6 +149,10 @@ class DataItem
        this.probeLength++;
    }
 //--------------------------------------------------------------
+   public void setProbeLength(int newLength){
+       this.probeLength = newLength;
+   }
+//--------------------------------------------------------------
    }  // end class DataItem
 ////////////////////////////////////////////////////////////////
 class HashTable
@@ -185,7 +189,7 @@ class HashTable
         int temp;
         for(int i = 1; i < charArray.length; i++){
             temp = charArray[i];
-            hashValue = (hashValue * 27 + temp) % arraySize;
+            hashValue = (hashValue * 26 + temp) % arraySize;
         }
         return hashValue;
       }
@@ -239,5 +243,64 @@ class HashTable
       return null;                  // can't find item
       }
 // -------------------------------------------------------------
+   public void insertQuad(DataItem item) // insert a DataItem
+   // (assumes table not full)
+      {
+      int length = 1;
+      int index;
+      String key = item.getKey();      // extract key
+      int hashVal = hashFunc(key);  // hash the key
+                                    // until empty cell or -1,
+      index = hashVal;
+      while(hashArray[index] != null &&
+            !hashArray[index].getKey().equals(this.nonItem.getKey()))
+         {
+         length++;
+         index = hashVal + (length * length);
+         index %= arraySize;      // wraparound if necessary
+         }
+      item.setProbeLength(length);
+      hashArray[index] = item;    // insert item
+      }  // end insert()
+// -------------------------------------------------------------
+   public DataItem deleteQuad(String key)  // delete a DataItem
+      {
+      int hashVal = hashFunc(key);  // hash the key
+      int index = hashVal;
+      int length = 1;
+
+      while(hashArray[index] != null)  // until empty cell,
+        {                               // found the key?
+         if(hashArray[index].getKey().equals(key)){
+            DataItem temp = hashArray[index]; // save item
+            temp.setProbeLength(length);
+            hashArray[index] = nonItem;       // delete item
+            return temp;                        // return item
+         }//end if
+         length++;
+         index = hashVal + (length * length);   // go to next cell
+         index %= arraySize;      // wraparound if necessary
+        }
+      DataItem fail = new DataItem(nonItem.getKey());
+      fail.setProbeLength(length);
+      return fail;                  // can't find item
+      }  // end delete()
+// -------------------------------------------------------------
+   public DataItem findQuad(String key)    // find item with key
+      {
+      int hashVal = hashFunc(key);  // hash the key
+
+      while(hashArray[hashVal] != null)  // until empty cell,
+         {                               // found the key?
+         if(hashArray[hashVal].getKey().equals(key)){
+            return hashArray[hashVal];   // yes, return item
+         }
+         ++hashVal;                 // go to next cell
+         hashVal %= arraySize;      // wraparound if necessary
+         }
+      return null;                  // can't find item
+      }
+// -------------------------------------------------------------
+
    }  // end class HashTable
 ////////////////////////////////////////////////////////////////
