@@ -66,16 +66,17 @@ separated by a new line--all three files will be on the command line--use build/
                    String   Success Failure Probe length for success  Probe length for failure
                     ...      yes                     ...
                     ...              yes                                          ...
-    average probe length:                                  x.xx                         y.yy                     
+                   Average probe length:            x.xx                         y.yy                     
 
 
 # Task 6: 
 * Delete each of the strings in the third file from  A (if present)  using hashing and linear probing, and from B (if present) using hashing and quadratic probing. Print the following tables for A and B (just for the deletions) :
 
+
                    String   Succcess Failure Probe length for success  Probe length for failure
                     ...      yes                             ...
                     ...              yes                                                ...
-     average probe length:                                  x.xx                         y.yy
+                   Average probe length:                    x.xx                       y.yy
 
 Turn in the Assignment when Finished
 Good Luck
