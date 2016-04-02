@@ -47,10 +47,11 @@ class Program{
             quadTable = fillTableQuad(this.initialFile, quadTable);
 
             //Show Results
-            linearTable.displayTable();
-            quadTable.displayTable();
+            System.out.printf("Average Probe Length: %30d%n", linearTable.displayTable());
+            System.out.printf("Average Probe Length: %30d%n", quadTable.displayTable());
             
             //Find strings in those tables
+            System.out.printf("%nSearch Linear%n");
             DataItem[] results = findStringsInTableLinear(this.searchFile, linearTable);
             displayResults(results);
             
@@ -62,6 +63,25 @@ class Program{
         }
         System.out.printf("%nEnd of Program%n");
         return;
+    }
+    
+    private DataItem[] deleteStringsInTableLinear(File file, HashTable table){
+        DataItem[] results = new DataItem[this.arraySize];
+        
+        try{
+            int i = 0;
+            String key;
+            Scanner fileScanner = new Scanner(file);
+            while(fileScanner.hasNext()){
+                key = fileScanner.nextLine().trim();
+                results[i] = table.deleteLinear(key);
+                i++;
+            }
+        }
+        catch (FileNotFoundException ex){
+            System.out.printf("File: %s was not found%n", file.getName());
+        }
+        return results;
     }
     
     private DataItem[] findStringsInTableLinear(File file, HashTable table){
@@ -269,16 +289,24 @@ class HashTable
       this.tableName = tableName;
       }
 // -------------------------------------------------------------
-   public void displayTable()
+   public int displayTable()
       {
+      int average;
+      int total = 0;
+      int items = 0;
       System.out.printf("%8s%n", this.tableName);
       System.out.printf("%s | %-40s | %s |%n", "Index", "String", "Probe Length for Insertion");
       for(int j=0; j<arraySize; j++)
          {
             if(hashArray[j] != null){
-                System.out.printf("%5d | %-40s | %-13d%n", j, hashArray[j].getKey(), hashArray[j].getProbeLength());
+                System.out.printf("%5d | %-40s | %-26d |%n", j, hashArray[j].getKey(), hashArray[j].getProbeLength());
+                items++;
+                total += hashArray[j].getProbeLength();
             }
          }
+      
+      average = (total / items);
+      return average;
       }
 // -------------------------------------------------------------
    public int hashFunc(String key)
