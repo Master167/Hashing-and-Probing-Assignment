@@ -54,15 +54,59 @@ class Program{
             System.out.printf("%nSearch Linear%n");
             DataItem[] results = findStringsInTableLinear(this.searchFile, linearTable);
             displayResults(results);
+            System.out.printf("%nSearch Quadratic%n");
+            results = findStringsInTableQuadratic(this.searchFile, quadTable);
+            displayResults(results);
             
             //Delete strings in those tables
             System.out.printf("%nDelete Linear%n");
             results = deleteStringsInTableLinear(this.deletionFile, linearTable);
             displayResults(results);
+            System.out.printf("%nDelete Quadratic%n");
+            results = deleteStringsInTableQuadratic(this.deletionFile, quadTable);
+            displayResults(results);
             
         }
         System.out.printf("%nEnd of Program%n");
         return;
+    }
+    
+    private DataItem[] deleteStringsInTableQuadratic(File file, HashTable table){
+        DataItem[] results = new DataItem[this.arraySize];
+        
+        try{
+            int i = 0;
+            String key;
+            Scanner fileScanner = new Scanner(file);
+            while(fileScanner.hasNext()){
+                key = fileScanner.nextLine().trim();
+                results[i] = table.deleteQuad(key);
+                i++;
+            }
+        }
+        catch (FileNotFoundException ex){
+            System.out.printf("File: %s was not found%n", file.getName());
+        }
+        return results;
+    }
+    
+    private DataItem[] findStringsInTableQuadratic(File file, HashTable table){
+        DataItem[] results = new DataItem[this.arraySize];
+        
+        try{
+            int i = 0;
+            String key;
+            Scanner fileScanner = new Scanner(file);
+            while(fileScanner.hasNext()){
+                key = fileScanner.nextLine().trim();
+                results[i] = table.findQuad(key);
+                i++;
+            }
+        }
+        catch (FileNotFoundException ex){
+            System.out.printf("File: %s was not found%n", file.getName());
+        }
+        return results;
     }
     
     private DataItem[] deleteStringsInTableLinear(File file, HashTable table){
