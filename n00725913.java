@@ -87,8 +87,12 @@ class Program{
         ArrayList<DataItem> success = new ArrayList<DataItem>();
         ArrayList<DataItem> failure = new ArrayList<DataItem>();
         
-        System.out.printf("%-40s | %7s | %7s | %24s | %24s", "String", "Success", "Failure" , "Probe Length for Success", "Probe Length for Failure");
+        System.out.printf("%-40s | %7s | %7s | %24s | %24s%n", "String", "Success", "Failure" , "Probe Length for Success", "Probe Length for Failure");
         for(DataItem item : results){
+            if(item == null){
+                //End the loop when I run out of results
+                break;
+            }
             if(item.getFind()){
                 //Success
                 System.out.printf("%-40s | %7s | %7s | %24s | %24s%n", item.getKey(), "Yes", "", item.getProbeLength(), "");
@@ -102,7 +106,11 @@ class Program{
         }
         
         //Print the Average probe length
-        System.out.printf("%-63s %24d %24d%n", getAverageLength((DataItem[])success.toArray()), getAverageLength((DataItem[])failure.toArray()));
+        DataItem[] successArray = new DataItem[success.size()];
+        successArray = success.toArray(successArray);
+        DataItem[] failureArray = new DataItem[failure.size()];
+        failureArray = failure.toArray(successArray);
+        System.out.printf("%-63s %23d | %24d%n", "Average Probe Length:", getAverageLength(successArray), getAverageLength(failureArray));
         
         return;
     }
@@ -263,7 +271,7 @@ class HashTable
 // -------------------------------------------------------------
    public void displayTable()
       {
-      System.out.printf("%s%n", this.tableName);
+      System.out.printf("%8s%n", this.tableName);
       System.out.printf("%s | %-40s | %s |%n", "Index", "String", "Probe Length for Insertion");
       for(int j=0; j<arraySize; j++)
          {
@@ -305,7 +313,7 @@ class HashTable
    public DataItem deleteLinear(String key)  // delete a DataItem
       {
       int hashVal = hashFunc(key);  // hash the key
-      int length = 0;
+      int length = 1;
       while(hashArray[hashVal] != null)  // until empty cell,
         {                               // found the key?
          if(hashArray[hashVal].getKey().equals(key)){
@@ -327,7 +335,7 @@ class HashTable
    public DataItem findLinear(String key)    // find item with key
       {
       int hashVal = hashFunc(key);  // hash the key
-      int length = 0;
+      int length = 1;
       while(hashArray[hashVal] != null)  // until empty cell,
          {                               // found the key?
          if(hashArray[hashVal].getKey().equals(key)){
