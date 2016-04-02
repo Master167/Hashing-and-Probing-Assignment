@@ -51,6 +51,8 @@ class Program{
             quadTable.displayTable();
             
             //Find strings in those tables
+            DataItem[] results = findStringsInTableLinear(this.searchFile, linearTable);
+            displayResults(results);
             
             //Show Results
             
@@ -62,18 +64,17 @@ class Program{
         return;
     }
     
-    private ArrayList findStringsInTableLinear(File file, HashTable table){
-        ArrayList results = new ArrayList();
+    private DataItem[] findStringsInTableLinear(File file, HashTable table){
+        DataItem[] results = new DataItem[this.arraySize];
         
         try{
             int i = 0;
             String key;
-            DataItem temp;
             Scanner fileScanner = new Scanner(file);
             while(fileScanner.hasNext()){
                 key = fileScanner.nextLine().trim();
-                temp = table.findLinear(key);
-                i += 2;
+                results[i] = table.findLinear(key);
+                i++;
             }
         }
         catch (FileNotFoundException ex){
@@ -83,7 +84,40 @@ class Program{
     }
     
     private void displayResults(DataItem[] results){
+        ArrayList<DataItem> success = new ArrayList<DataItem>();
+        ArrayList<DataItem> failure = new ArrayList<DataItem>();
         
+        System.out.printf("%-40s | %7s | %7s | %24s | %24s", "String", "Success", "Failure" , "Probe Length for Success", "Probe Length for Failure");
+        for(DataItem item : results){
+            if(item.getFind()){
+                //Success
+                System.out.printf("%-40s | %7s | %7s | %24s | %24s%n", item.getKey(), "Yes", "", item.getProbeLength(), "");
+                success.add(item);
+            }
+            else{
+                //Failure
+                System.out.printf("%-40s | %7s | %7s | %24s | %24s%n", item.getKey(), "", "Yes", "", item.getProbeLength());
+                failure.add(item);
+            }
+        }
+        
+        //Print the Average probe length
+        System.out.printf("%-63s %24d %24d%n", getAverageLength((DataItem[])success.toArray()), getAverageLength((DataItem[])failure.toArray()));
+        
+        return;
+    }
+    
+    private int getAverageLength(DataItem[] results){
+        int total = 0;
+        int average = 0;
+        
+        for(DataItem item : results){
+            total += item.getProbeLength();
+        }
+        
+        average = total / results.length;
+        
+        return average;
     }
     
     private HashTable fillTableLinear(File file, HashTable table){
