@@ -55,11 +55,11 @@ class Program{
             DataItem[] results = findStringsInTableLinear(this.searchFile, linearTable);
             displayResults(results);
             
-            //Show Results
-            
             //Delete strings in those tables
+            System.out.printf("%nDelete Linear%n");
+            results = deleteStringsInTableLinear(this.deletionFile, linearTable);
+            displayResults(results);
             
-            //Show Results
         }
         System.out.printf("%nEnd of Program%n");
         return;
@@ -110,7 +110,7 @@ class Program{
         System.out.printf("%-40s | %7s | %7s | %24s | %24s%n", "String", "Success", "Failure" , "Probe Length for Success", "Probe Length for Failure");
         for(DataItem item : results){
             if(item == null){
-                //End the loop when I run out of results
+                //End the loop when I've run out of results
                 break;
             }
             if(item.getFind()){
@@ -126,6 +126,7 @@ class Program{
         }
         
         //Print the Average probe length
+        //Convert the ArrayList into DataItem arrays
         DataItem[] successArray = new DataItem[success.size()];
         successArray = success.toArray(successArray);
         DataItem[] failureArray = new DataItem[failure.size()];
@@ -294,7 +295,7 @@ class HashTable
       int average;
       int total = 0;
       int items = 0;
-      System.out.printf("%8s%n", this.tableName);
+      System.out.printf("%7s%n", this.tableName);
       System.out.printf("%s | %-40s | %s |%n", "Index", "String", "Probe Length for Insertion");
       for(int j=0; j<arraySize; j++)
          {
