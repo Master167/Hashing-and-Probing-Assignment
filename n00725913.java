@@ -1,4 +1,4 @@
-import java.util.List;
+import java.util.ArrayList;
 import java.util.Scanner;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -33,6 +33,10 @@ class Program{
         if(valid){
             this.numberOfStrings = findNumberOfStrings();
             this.arraySize = getNextPrime(this.numberOfStrings);
+            if(this.arraySize == -1){
+                System.out.printf("Initial File is two large%n");
+                return;
+            }
             
             //Create Hash Tables for Linear Probing and Quadratic probing
             HashTable linearTable = new HashTable("A", this.arraySize);
@@ -55,13 +59,38 @@ class Program{
             //Show Results
         }
         System.out.printf("%nEnd of Program%n");
+        return;
+    }
+    
+    private ArrayList findStringsInTableLinear(File file, HashTable table){
+        ArrayList results = new ArrayList();
+        
+        try{
+            int i = 0;
+            String key;
+            DataItem temp;
+            Scanner fileScanner = new Scanner(file);
+            while(fileScanner.hasNext()){
+                key = fileScanner.nextLine().trim();
+                temp = table.findLinear(key);
+                i += 2;
+            }
+        }
+        catch (FileNotFoundException ex){
+            System.out.printf("File: %s was not found%n", file.getName());
+        }
+        return results;
+    }
+    
+    private void displayResults(DataItem[] results){
+        
     }
     
     private HashTable fillTableLinear(File file, HashTable table){
         try{
             Scanner fileReader = new Scanner(file);
             for(int i = 0; i < this.numberOfStrings; i++){
-                table.insertLinear(new DataItem(fileReader.nextLine()));
+                table.insertLinear(new DataItem(fileReader.nextLine().trim()));
             }
         }
         catch(FileNotFoundException ex){
@@ -75,7 +104,7 @@ class Program{
         try{
             Scanner fileReader = new Scanner(file);
             for(int i = 0; i < this.numberOfStrings; i++){
-                table.insertQuad(new DataItem(fileReader.nextLine()));
+                table.insertQuad(new DataItem(fileReader.nextLine().trim()));
             }
         }
         catch(FileNotFoundException ex){
@@ -88,7 +117,7 @@ class Program{
     // Method from pg. 541 of Data Structures and Algorithms in Java by Robert Lafore
     private int getNextPrime(int min){
         for(int i = min + 1; i < Integer.MAX_VALUE - 1; i++){
-            if(isPrime(i)){
+            if(isPrime(i) && (i / 2) >= this.numberOfStrings){
                 return i;
             }
         }
@@ -150,10 +179,12 @@ class DataItem
    {                                // (could have more data)
    private String data;               // data item (key)
    private int probeLength;
+   private boolean find;
 //--------------------------------------------------------------
    public DataItem(String str){ 
        this.data = str; 
        this.probeLength = 0;
+       this.find = true;
    }
 //--------------------------------------------------------------
    public String getKey()
@@ -169,6 +200,14 @@ class DataItem
 //--------------------------------------------------------------
    public void setProbeLength(int newLength){
        this.probeLength = newLength;
+   }
+//--------------------------------------------------------------
+   public boolean getFind(){
+       return this.find;
+   }
+//--------------------------------------------------------------
+   public void setFind(boolean newFind){
+       this.find = newFind;
    }
 //--------------------------------------------------------------
    }  // end class DataItem
@@ -232,33 +271,44 @@ class HashTable
    public DataItem deleteLinear(String key)  // delete a DataItem
       {
       int hashVal = hashFunc(key);  // hash the key
-
+      int length = 0;
       while(hashArray[hashVal] != null)  // until empty cell,
         {                               // found the key?
          if(hashArray[hashVal].getKey().equals(key)){
             DataItem temp = hashArray[hashVal]; // save item
             hashArray[hashVal] = nonItem;       // delete item
+            temp.setProbeLength(length);
             return temp;                        // return item
         }
+         length++;
          ++hashVal;                 // go to next cell
          hashVal %= arraySize;      // wraparound if necessary
         }
-      return null;                  // can't find item
+      DataItem fail = new DataItem(key);
+      fail.setFind(false);
+      fail.setProbeLength(length);
+      return fail;                  // can't find item
       }  // end delete()
 // -------------------------------------------------------------
    public DataItem findLinear(String key)    // find item with key
       {
       int hashVal = hashFunc(key);  // hash the key
-
+      int length = 0;
       while(hashArray[hashVal] != null)  // until empty cell,
          {                               // found the key?
          if(hashArray[hashVal].getKey().equals(key)){
-            return hashArray[hashVal];   // yes, return item
+            DataItem temp = hashArray[hashVal];
+            temp.setProbeLength(length);
+            return temp;   // yes, return item
          }
+         length++;
          ++hashVal;                 // go to next cell
          hashVal %= arraySize;      // wraparound if necessary
          }
-      return null;                  // can't find item
+      DataItem fail = new DataItem(key);
+      fail.setFind(false);
+      fail.setProbeLength(length);
+      return fail;                  // can't find item
       }
 // -------------------------------------------------------------
    public void insertQuad(DataItem item) // insert a DataItem
@@ -299,7 +349,8 @@ class HashTable
          index = hashVal + (length * length);   // go to next cell
          index %= arraySize;      // wraparound if necessary
         }
-      DataItem fail = new DataItem(nonItem.getKey());
+      DataItem fail = new DataItem(key);
+      fail.setFind(false);
       fail.setProbeLength(length);
       return fail;                  // can't find item
       }  // end delete()
@@ -319,7 +370,8 @@ class HashTable
          index = hashVal + (length * length);                 // go to next cell
          index %= arraySize;      // wraparound if necessary
          }
-      DataItem fail = new DataItem(nonItem.getKey());
+      DataItem fail = new DataItem(key);
+      fail.setFind(false);
       fail.setProbeLength(length);
       return fail;                  // can't find item
       }
